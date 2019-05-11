@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
@@ -25,20 +25,25 @@ class Checkout extends Component {
     }
 
     proceedOrderHandler = () => {
-        console.log(this.state);
         this.props.history.replace('/checkout/contact-data');
     }
 
     render() {
-        return (
-            <div className = {classes.Checkout}>
-                <CheckoutSummary ingredients = {this.state.ingredients}
-                    cancel = {this.cancelOrderHandler}
-                    success = {this.proceedOrderHandler}/>
-                <Route path= {this.props.match.path +'/contact-data'}
-                       render = {(props) => <ContactData {...props} ingredients = {this.state.ingredients} totalPrice = {this.state.price}/>} />
-            </div>
-        );
+
+        let checkout = <Redirect to= '/'/>;
+        if(this.state.ingredients){
+            checkout = (
+                <div className = {classes.Checkout}>
+                    <CheckoutSummary ingredients = {this.state.ingredients}
+                        cancel = {this.cancelOrderHandler}
+                        success = {this.proceedOrderHandler}/>
+                    <Route path= {this.props.match.path +'/contact-data'}
+                        render = {(props) => <ContactData {...props} ingredients = {this.state.ingredients} totalPrice = {this.state.price}/>} />                
+                </div>
+            )
+        }
+
+        return checkout;
     }
 }
 
