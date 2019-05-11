@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import MyButton from '../../../components/UI/Button/Button';
-import classes from './ContactData.module.scss'
-import axios from '../../../axios.instance';
+import classes from './ContactData.module.scss';
 import Input from '../../../components/UI/Input/input';
+import { connect } from 'react-redux';
+import Loading from '../../../components/UI/Loading/Loading';
+import * as orderAction from '../../../store/actions/'
+
 
 class ContactData extends Component {
 
@@ -127,11 +130,7 @@ class ContactData extends Component {
             customerOrder[key] = this.state.orderForm[key].value;
         }
         const order = {...customerOrder, ingredients : this.props.ingredients, totalPrice : this.props.totalPrice};
-         axios.post('/order.json', order).then(res => {
-            this.props.history.push('/');
-        }).catch(error => {
-
-        })
+        this.props.onOrderBurger(order); 
 
     }
 
@@ -166,7 +165,6 @@ class ContactData extends Component {
                 config: this.state.orderForm[key]
             })
         }        
-
         let form = (
             <form onSubmit = {this.orderHandler}>
                 {formArrayElements.map(element => ( 
@@ -183,6 +181,10 @@ class ContactData extends Component {
             </form>
         )
 
+        if(this.props.loading){
+            form = <Loading />
+        }
+
         return (
             <div className = {classes.ContactData}>
                 <h4>Enter you Contact Details</h4>
@@ -192,4 +194,18 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = (state) => {
+    return {
+        ingredients : state.burgerBuilder.ingredients,
+        totalPrice : state.burgerBuilder.totalPrice,
+        loading : state.order.loading
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onOrderBurger : (orderData) => dispatch(orderAction.purchaseBurger(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
