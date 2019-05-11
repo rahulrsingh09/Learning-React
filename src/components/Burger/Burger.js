@@ -1,11 +1,11 @@
 
 import React from 'react';
 import BurgerIngredients from './BurgerIngridents/BurgerIngredients';
+import { withRouter  } from 'react-router';
 
 import classes from './Burger.module.scss';
 
 const Burger = (props) => {
-
     let transformedIngredients = Object.keys(props.ingredients).map(ingredient => {
         return [...Array(props.ingredients[ingredient])].map( (_,index) => {
             return (
@@ -28,4 +28,4 @@ const Burger = (props) => {
     );
 }
 
-export default Burger;
+export default withRouter(Burger); // just to get route methods

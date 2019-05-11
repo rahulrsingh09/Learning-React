@@ -25,12 +25,9 @@ class BurgerBuilder extends Component{
     }
 
     componentDidMount(){
-        this.props.loading(true);
-        axios.get('ingredients.jn').then(ingredients => {
+        axios.get('ingredients.json').then(ingredients => {
             this.setState({ingredients: ingredients.data});
-            this.props.loading(false);
         }).catch( error => {
-            this.props.loading(false);
         })
 
     }
@@ -82,7 +79,11 @@ class BurgerBuilder extends Component{
     }
 
     continuePurchaseHandler = () => {
-        alert('Continue');
+        const userBurgerIngredients = {...this.state.ingredients};
+        this.props.history.push({
+            pathname: '/checkout',
+            state : {ingredients : userBurgerIngredients, totalPrice: this.state.totalPrice}
+        });
     }
 
     cancelPurchaseHandler = () => {

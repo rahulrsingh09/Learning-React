@@ -17,8 +17,8 @@ const OrderSummary = (props) => {
             </ul>
             <strong>Total Price : Rs {props.total}</strong>
             <p>Continue to checkout ?</p>
-            <MyButton type = 'Danger' clicked = {props.cancel}>cancel</MyButton>
-            <MyButton type = 'Success' clicked = {props.success}>continue</MyButton>
+            <MyButton type = 'Danger' clicked = {props.cancel}>CANCEL</MyButton>
+            <MyButton type = 'Success' clicked = {props.success}>CONTINUE</MyButton>
 
         </Aux>
     );
