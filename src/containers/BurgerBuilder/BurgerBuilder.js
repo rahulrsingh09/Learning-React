@@ -22,8 +22,13 @@ class BurgerBuilder extends Component{
     }
 
     purchaseHandler = () => {
-        this.setState({purchasing : true});
-        this.props.onPurchaseInit();
+        if(this.props.isAuthenticated) {
+            this.setState({purchasing : true});
+            this.props.onPurchaseInit();    
+        } else {
+            this.props.onSetAuthRedirectPath('/checkout');
+            this.props.history.push('/auth');
+        }
     }
 
     closeModalHandler = () => {
@@ -57,7 +62,8 @@ class BurgerBuilder extends Component{
                                     removeIngredients = {this.props.onIngredientRemoved}
                                     totalPrice = {this.props.totalPrice}
                                     disabled = {disabledInfo}
-                                    purchasing = {this.purchaseHandler}/>
+                                    purchasing = {this.purchaseHandler}
+                                    isAuth = {this.props.isAuthenticated}/>
                     </Aux>
             
             orderSummary = <OrderSummary ingredients = {this.props.ingredients}
@@ -81,7 +87,9 @@ const mapStateToProps = (state) => {
     return {
         ingredients : state.burgerBuilder.ingredients,
         totalPrice : state.burgerBuilder.totalPrice,
-        error : state.burgerBuilder.error
+        error : state.burgerBuilder.error,
+        isAuthenticated : state.auth.idToken != null
+        
     }
 }
 
@@ -90,8 +98,8 @@ const mapDispatchToToProps = (dispatch) => {
         onIngredientAdded : (ingredientName) => {dispatch(burgerBuilderActions.addIngredient(ingredientName))},
         onIngredientRemoved : (ingredientName) => {dispatch(burgerBuilderActions.removeIngredient(ingredientName))},
         onInitIngredients : () => {dispatch(burgerBuilderActions.initIngredients())},
-        onPurchaseInit : () => {dispatch(burgerBuilderActions.purchaseInit())}
-
+        onPurchaseInit : () => {dispatch(burgerBuilderActions.purchaseInit())},
+        onSetAuthRedirectPath : (path) => {dispatch(burgerBuilderActions.setAuthRedirectPath(path))}
     }
 }
 

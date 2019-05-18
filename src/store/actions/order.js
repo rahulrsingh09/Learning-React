@@ -62,10 +62,10 @@ export const fetchOrderInit = () => {
 
 
 
-export const fetchOrder = () => {
+export const fetchOrder = (authToken) => {
     return dispatch => {
         dispatch(fetchOrderInit());
-        axios.get('/order.json').then(res => {
+        axios.get('/order.json?auth='+ authToken).then(res => {
             const fetchedOrders = [];
             for(let id in res.data){
                 fetchedOrders.push({
@@ -73,7 +73,7 @@ export const fetchOrder = () => {
                     id : id,
                     totalPrice : res.data[id].totalPrice
                 })
-            }
+            } 
             dispatch(fetchOrderSuccess(fetchedOrders));
 
         }).catch(error => {

@@ -23,7 +23,7 @@ const BuildControls = (props) => {
             <button className = {classes.OrderButton} 
                     disabled = {props.totalPrice <= 4 ? true : false}
                     onClick = {props.purchasing}
-                    >Order Now</button>
+                    >{props.isAuth ? 'Order Now': 'SIGN UP TO CONTINUE'}</button>
         </div>
     );
 }

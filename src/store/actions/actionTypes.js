@@ -13,6 +13,17 @@ export const FETCH_ORDER_SUCCESS = 'FETCH_ORDER_SUCCESS';
 export const FETCH_ORDER_FAIL = 'FETCH_ORDER_FAIL';
 
 
+export const AUTH_AUTO_CHECK = 'AUTH_AUTO_CHECK';
+export const AUTH_START = 'AUTH_START';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+export const AUTH_INITIATE = 'AUTH_INITIATE';
+export const CHECK_AUTH_TIMEOUT = 'CHECK_AUTH_TIMEOUT';
+export const LOGOUT = 'LOGOUT';
+export const LOGOUT_SUCCEDED = 'LOGOUT_SUCCEDED';
+export const SET_AUTH_REDIRECT_PATH = 'SET_AUTH_REDIRECT_PATH';
+
+
 
 
 
