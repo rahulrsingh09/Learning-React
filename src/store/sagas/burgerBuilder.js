@@ -5,9 +5,6 @@ import * as actions from '../actions';
 
 
 export function* initIngredientsSaga(){
-    yield localStorage.clear()
-    yield put (actions.logoutSucceded())
-    yield put (actions.resetOrders())
     try{
         const response = yield axios.get('ingredients.json');
         yield put(actions.setIngredients(response.data));        
