@@ -55,6 +55,11 @@ const reducer = (state = initialState, action) => {
                 loading : false
             }
         }
+        case actionTypes.RESET_ORDERS :{
+            return {
+                ...initialState
+            }
+        }
         default: return state
     }
 }

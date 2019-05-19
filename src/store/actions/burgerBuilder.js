@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios.instance';
+
 
 export const addIngredient = (ingredientName) => {
     return {
@@ -22,20 +22,21 @@ export const setIngredients = (ingredients) => {
     }
 }
 
-export const errorLoadingIngredients = () => {
+export const errorLoadingIngredients = (error) => {
     return {
-        type : actionTypes.ERROR_LOADING_INGREDIENTS
+        type : actionTypes.ERROR_LOADING_INGREDIENTS,
+        error : error
+    }
+}
+
+export const resetIngredients = () => {
+    return {
+        type : actionTypes.RESET_INGREDIENTS
     }
 }
 
 export const initIngredients = () => {
-    return dispatch  => {
-         axios.get('ingredients.json').then(ingredients => {
-            console.log(ingredients.data)
-            dispatch(setIngredients(ingredients.data));
-        }).catch( error => {
-            dispatch(errorLoadingIngredients());    
-        })
-
+    return {
+        type : actionTypes.INIT_INGREDIENTS
     }; 
 }

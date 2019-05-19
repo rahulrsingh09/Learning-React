@@ -49,6 +49,11 @@ const reducer = (state = initialState, action) => {
                 building :false
             }
         }
+        case actionTypes.RESET_INGREDIENTS: {
+            return {
+                ...initialState
+            }
+        }
         case actionTypes.ERROR_LOADING_INGREDIENTS: {
             return {
                 ...state,

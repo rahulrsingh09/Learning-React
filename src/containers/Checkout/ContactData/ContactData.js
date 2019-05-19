@@ -129,8 +129,8 @@ class ContactData extends Component {
         for(let key in this.state.orderForm) {
             customerOrder[key] = this.state.orderForm[key].value;
         }
-        const order = {...customerOrder, ingredients : this.props.ingredients, totalPrice : this.props.totalPrice};
-        this.props.onOrderBurger(order); 
+        const order = {...customerOrder, ingredients : this.props.ingredients, totalPrice : this.props.totalPrice, userId: this.props.userId };
+        this.props.onOrderBurger(order, this.props.authToken); 
 
     }
 
@@ -198,13 +198,15 @@ const mapStateToProps = (state) => {
     return {
         ingredients : state.burgerBuilder.ingredients,
         totalPrice : state.burgerBuilder.totalPrice,
-        loading : state.order.loading
+        loading : state.order.loading,
+        userId : state.auth.localId,
+        authToken : state.auth.idToken
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onOrderBurger : (orderData) => dispatch(orderAction.purchaseBurger(orderData))
+        onOrderBurger : (orderData, authToken) => dispatch(orderAction.purchaseBurger(orderData, authToken))
     }
 }
 

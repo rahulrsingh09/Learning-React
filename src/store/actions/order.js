@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios.instance';
+import * as burgerActions from '../actions';
 
 export const purchaseBurgerSuccess = (id, orderData) => {
     return {
@@ -22,12 +23,19 @@ export const purchaseBurgerInit = () => {
     }
 }
 
+export const resetOrders = () => {
+    return {
+        type : actionTypes.RESET_ORDERS
+    }
+}
 
-export const purchaseBurger = (orderData) => {
+
+export const purchaseBurger = (orderData, authToken) => {
     return dispatch => {
         dispatch(purchaseBurgerInit());
-        axios.post('/order.json', orderData).then(res => {
-           dispatch(purchaseBurgerSuccess(res.data.name, orderData))
+        axios.post('/order.json?auth='+ authToken, orderData).then(res => {
+           dispatch(purchaseBurgerSuccess(res.data.name, orderData));
+           dispatch(burgerActions.resetIngredients())
         }).catch(error => {
             dispatch(purchaseBurgerFail(error))
         })
@@ -62,10 +70,11 @@ export const fetchOrderInit = () => {
 
 
 
-export const fetchOrder = (authToken) => {
+export const fetchOrder = (authToken, userId) => {
     return dispatch => {
         dispatch(fetchOrderInit());
-        axios.get('/order.json?auth='+ authToken).then(res => {
+        const queryParams = authToken + '&orderBy="userId"&equalTo="'+ userId + '"';
+        axios.get('/order.json?auth='+ queryParams).then(res => {
             const fetchedOrders = [];
             for(let id in res.data){
                 fetchedOrders.push({

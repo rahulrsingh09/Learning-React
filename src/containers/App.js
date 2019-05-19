@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import Layout from '../components/Layout/Layout';
@@ -30,10 +30,11 @@ class App extends Component {
             {/* <Loading show = {this.state.showLoading}/> */}
             <Switch>
               <Route path= '/checkout' component = {Checkout} />
-              <Route path= '/orders' component = {Orders}/>
+              { this.props.isAuthenticated ? <Route path= '/orders' component = {Orders}/> : null }
               <Route path= '/auth' exact component = {Auth}/>
               <Route path= '/logout' exact component = {Logout}/>
               <Route path= '/' exact component = {BurgerBuilder}/>
+              <Redirect to="/"/>
             </Switch>
           </Layout>
     );
@@ -42,8 +43,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
-      
+    isAuthenticated : state.auth.idToken != null    
   }
 }
 

@@ -7,11 +7,13 @@ import * as actions from '../actions';
 export function* logoutSaga(action){
     yield localStorage.clear()
     yield put (actions.logoutSucceded())
+    yield put (actions.resetOrders())
 }
 
 export function* checkAuthTimeoutSaga(action){
     yield delay(action.expirationTime);
     yield put (actions.logout())
+    yield put (actions.resetOrders())
 }
 
 export function* authUserSaga(action){
