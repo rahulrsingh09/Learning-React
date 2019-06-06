@@ -15,7 +15,7 @@ const Modal = (props) => {
 
     return (
         <Aux>
-            <Backdrop show = {props.show === 'entered' || props.show ==='entering'} close = {props.close}/>
+            <Backdrop show = {props.show === 'entered' || props.show ==='exiting'} close = {props.close}/>
             <div className = {cssclasses.join(' ')} /* style = {props.style} */>
                 {props.children}
             </div>
