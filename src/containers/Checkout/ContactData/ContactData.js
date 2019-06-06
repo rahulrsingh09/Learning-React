@@ -135,6 +135,7 @@ class ContactData extends Component {
     }
 
     onInputChangeHandler = (event, elementId) => {
+        console.log('onevery input');
         const updatedOrderForm = {
             ...this.state.orderForm,
             [elementId] : {

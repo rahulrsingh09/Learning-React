@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect, useReducer } from 'react';
 import Aux from '../../hoc/Auxillary';
+import { Motion, spring } from "react-motion";
+import { Transition } from 'react-transition-group';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -13,14 +15,14 @@ import * as burgerBuilderActions from '../../store/actions/';
 
 const BurgerBuilder = props => {
 
-    //const [purchasing, setPurchasing] = useState(false);
+    const [animating, setAnimation] = useState(false);
     // alternative to useState useReducer
     const purchaseReducer = (state, action) => {
-        switch(action.type) {
-            case 'SET' :{
+        switch (action.type) {
+            case 'SET': {
                 return action.payload;
             }
-            default :{
+            default: {
                 return state;
             }
         }
@@ -29,17 +31,17 @@ const BurgerBuilder = props => {
 
     useEffect(() => {
         props.onInitIngredients();
-     return () => {
-         // component did unmount clean up stuff goes here
-         // empty array to only use as component did mount
-     }
+        return () => {
+            // component did unmount clean up stuff goes here
+            // empty array to only use as component did mount
+        }
 
     }, []);
 
     const purchaseHandler = () => {
         if (props.isAuthenticated) {
-            dispatch({type: 'SET', payload: true});
-            //setPurchasing(true);
+            dispatch({ type: 'SET', payload: true });
+            setAnimation(true);
             props.onPurchaseInit();
         } else {
             props.onSetAuthRedirectPath('/checkout');
@@ -48,8 +50,8 @@ const BurgerBuilder = props => {
     }
 
     const closeModalHandler = () => {
-       // this.setState({ purchasing: false });
-       dispatch({type: 'SET', payload: false});
+        // this.setState({ purchasing: false });
+        dispatch({ type: 'SET', payload: false });
     }
 
     const continuePurchaseHandler = () => {
@@ -88,12 +90,55 @@ const BurgerBuilder = props => {
             cancel={cancelPurchaseHandler} />
     }
 
+    const onRest = () => {
+        setAnimation(false);
+    }
+
     return (
         <Aux>
             {burger}
-            <Modal show={purchasing} close={closeModalHandler}>
-                {orderSummary}
-            </Modal>
+            <Transition in={purchasing}
+                mountOnEnter
+                unmountOnExit
+                timeout={300} >
+                {state => (
+                    <Modal
+                        show={state}
+                        close={closeModalHandler}
+                    >   {state}
+                        {orderSummary}
+                    </Modal>
+                )}
+            </Transition>
+            {/* Use the below incase of react motion  */}
+            {/*             <Motion
+                defaultStyle={{ x: -200, opacity: 0 }}
+                style={{
+                    x: spring(purchasing ? 0 : -200),
+                    opacity: spring(purchasing ? 1 : 0)
+                }}
+                onRest={onRest}
+            >
+                {style => {
+                    let modal = null;
+                       if(animating){
+                        modal = (
+                            <Modal
+                            show={purchasing}
+                            close={closeModalHandler}
+                            style={{
+                                transform: `translateX(${style.x}px)`,
+                                opacity: style.opacity
+                            }}
+                        >
+                            {orderSummary}
+                        </Modal>
+                        )
+                       }
+                    return modal;
+                }}
+            </Motion>
+ */}
         </Aux>
     )
 }
